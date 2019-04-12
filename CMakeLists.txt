@@ -2,57 +2,25 @@
 project ( cmake_compile_qt_project )
 set(PROJECT_NAME cmake_compile_qt_project_test)
 
-# declaring files in your project
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed
+set(CMAKE_AUTOMOC ON)
+# Create code from a list of Qt designer ui files
+set(CMAKE_AUTOUIC ON)
 
-set ( SOURCES
- main.cpp
- mainwindow.cpp
+# Find the QtWidgets library
+find_package(Qt5Widgets CONFIG REQUIRED)
+
+# Populate a CMake variable with the sources
+set(helloworld_SRCS
+    mainwindow.ui
+    mainwindow.cpp
+    main.cpp
 )
 
-set ( MOC_HEADERS
- mainwindow.h
-)
-
-set ( UIS
- mainwindow.ui
-)
-
-# set ( RESOURCES
-# main.qrc
-# )
-
-# Next lines needed for building all Qt projects
-find_package( Qt5 REQUIRED Core Gui Widgets)
-set(QT_PREFIX C:/Qt/Qt5.9.6/5.9.6/msvc2015_64)
-set(QT_USE_FILE ${QT_PREFIX}/lib/cmake/Qt5/Qt5Config.cmake)
-include( ${QT_USE_FILE} )
-add_definitions( ${QT_DEFINITIONS} )
-include_directories( 
-	${CMAKE_BINARY_DIR} 
-	${QT_PREFIX}/include
-	${QT_PREFIX}/include/QtWidgets
-)
-
-
-# Next, using precompiler, compiler and linker
-
-# using Qt meta-system (precompiler)
-QT5_ADD_RESOURCES( RES_SOURCES ${RESOURCES} )
-QT5_WRAP_UI( UI_HEADERS ${UIS} )
-QT5_WRAP_CPP( MOC_SRCS ${MOC_HEADERS} )
-
-# Specify qt libraries path
-link_directories(${QT_PREFIX}/lib)
-
-# compile
-add_executable( ${PROJECT_NAME} 
-	${SOURCES} 
-	${MOC_SRCS} 
-	${RES_SOURCES} 
-	${UI_HEADERS} 
-)
-# or use line below instead, if you using Windows ™ Operating System.
-#add_executable( PROJECT_NAME WIN32 ${SOURCES} ${MOC_SRCS} ${RES_SOURCES} ${UI_HEADERS} )
+# Tell CMake to create the helloworld executable
+add_executable(${PROJECT_NAME} ${helloworld_SRCS})
 
 # Remove the console of gui program
 if(WIN32)
@@ -76,11 +44,5 @@ else()
 	message(SEND_ERROR "You are on an unsupported platform! (Not Win32, Mac OS X or Unix)")
 endif(WIN32)
 
-# build it (link libraries)
-target_link_libraries( ${PROJECT_NAME} 
-	#${QT_LIBRARIES}
-	Qt5Core
-	Qt5Widgets
-)
-
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+# Use the Widgets module from Qt 5
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
