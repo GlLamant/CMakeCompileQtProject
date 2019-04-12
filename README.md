@@ -23,6 +23,7 @@ make
 
 ## Refer
 [Using CMake build system with Qt4](https://wiki.qt.io/Using_CMake_build_system)
+
 [CMake Manual](https://doc.qt.io/qt-5/cmake-manual.html)
 
 ## Other
