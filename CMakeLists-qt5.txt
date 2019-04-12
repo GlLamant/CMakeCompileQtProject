@@ -1,0 +1,39 @@
+﻿cmake_minimum_required(VERSION 2.8)
+project(cmake_compile_qt_project_test)
+set(ROOT_DIR ${PROJECT_SOURCE_DIR})
+
+link_directories(${ROOT_DIR}/lib)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTORCC ON)
+
+# find_package(Qt5Widgets)
+# find_package(Qt5Gui)
+# find_package(Qt5Core)
+FILE (GLOB UI_FILES "./*.ui")
+qt5_wrap_cpp(MOC mainwindow.h)
+qt5_wrap_ui(WRAP_FILES ${UI_FILES})
+
+add_executable(CMakeComQMakeTest
+    ${SRCS}
+	${WRAP_FILES}
+)
+
+# target_link_libraries(CMakeComQMakeTest
+	# Qt5Gui
+    # Qt5Core
+    # Qt5Widgets
+# )
+
+include_directories(
+	${ROOT_DIR}/include/win
+	${ROOT_DIR}/include/win/QtGui
+	${ROOT_DIR}/include/win/QtCore
+	${ROOT_DIR}/include/win/QtWidgets
+)
+
+if (MSVC)
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif (MSVC)

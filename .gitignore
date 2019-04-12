@@ -1,0 +1,6 @@
+# build 
+build*
+install
+
+# user setting files
+*.user
